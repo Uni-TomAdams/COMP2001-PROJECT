@@ -25,7 +25,7 @@ namespace COMP2001_Authentication_Application.Controllers.API
             string response;
             _context.Register(user, out response);
 
-            if(response != null)
+            if (response != null)
             {
                 return Ok(response);
             }
@@ -33,11 +33,6 @@ namespace COMP2001_Authentication_Application.Controllers.API
             {
                 return StatusCode(208);
             }
-        }
-
-        private bool UserModelExists(int id)
-        {
-            return _context.UserModel.Any(e => e.UserID == id);
         }
     }
 }
