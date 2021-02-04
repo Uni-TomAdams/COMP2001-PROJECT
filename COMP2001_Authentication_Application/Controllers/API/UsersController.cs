@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace COMP2001_Authentication_Application.Controllers.API
 {
-    [Route("tadams/auth/api/user")]
+    [Route("api/user")]
     [ApiController]
     [Authorize]
     public class UsersController : ControllerBase
