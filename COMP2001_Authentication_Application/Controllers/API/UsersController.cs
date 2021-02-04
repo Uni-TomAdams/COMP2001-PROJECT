@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace COMP2001_Authentication_Application.Controllers.API
 {
-    [Route("tadams/auth/api/[controller]")]
+    [Route("tadams/auth/api/user")]
     [ApiController]
     [Authorize]
     public class UsersController : ControllerBase
@@ -25,17 +25,17 @@ namespace COMP2001_Authentication_Application.Controllers.API
             _jwtManager = jWTManager;
         }
 
-        // POST api/users
+        // POST api/user
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult<UserModel>> Register([FromBody] UserModel user)
+        public async Task<ActionResult<UserModel>> Post([FromBody] UserModel user)
         {
-            string response;
-            _context.Register(user, out response);
+            string Response;
+            Register(user, out Response);
 
-            if (response != null)
+            if (Response != null)
             {
-                return StatusCode(200, response);
+                return StatusCode(200, Response);
             }
             else
             {
@@ -43,40 +43,61 @@ namespace COMP2001_Authentication_Application.Controllers.API
             }
         }
 
-        // GET api/users
+        // GET api/user
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<UserModel>> LoginUser([FromBody] UserModel user)
+        public async Task<ActionResult<UserModel>> Get([FromBody] UserModel User)
         {
             // Attempt to validate a users credentials with the database
-            int verificationStatus = _context.ValidateUser(user);
+            bool verificationStatus = GetValidation(User);
 
             // Fake claims, would typically need to include users role for instance.
             Claim[] claims = new[]
             {
-                    new Claim(ClaimTypes.Name, user.Email),
+                    new Claim(ClaimTypes.Name, User.Email),
             };
 
             // Generate JWT token
             var jwtResult = _jwtManager.GenerateTokens(claims, DateTime.Now);
             return Ok(new LoginResultant()
             {
-                AccessToken = verificationStatus == 1
+                AccessToken = verificationStatus
                               ? jwtResult.AccessToken
                               : "",
-                Verified = verificationStatus == 1
+                Verified = verificationStatus
                               ? "true"
                               : "false"
             });
         }
 
+        // PUT api/user/{id}
         [HttpPut("{id}")]
         [AllowAnonymous]
-        public async Task<ActionResult<UserModel>> UpdateUser([FromBody] UserModel user)
+        public async Task<ActionResult<UserModel>> Update([FromBody] UserModel user, int id)
         {
-            _context.UpdateUser(user, user.UserID);
+            _context.UpdateUser(user, id);
 
             return Ok();
+        }
+
+        // DELETE api/user/{id}
+        [HttpDelete("{id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<UserModel>> Delete(int id)
+        {
+            _context.DeleteUser(id);
+
+            return Ok();
+        }
+
+        private bool GetValidation(UserModel User)
+        {
+            return _context.ValidateUser(User);
+        }
+
+        private void Register(UserModel User, out string Response)
+        {
+            _context.Register(User, out Response);
         }
 
         public class LoginResultant

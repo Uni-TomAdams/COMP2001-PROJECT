@@ -24,7 +24,7 @@ namespace COMP2001_Authentication_Application.Data
         /// <param name="ResponseMessage">the output response message from the database</param>
         public void Register(UserModel User, out string ResponseMessage)
         {
-            // TODO: provide validation logic here
+            // TODO: In the future provide a validation framework to check incoming fields
 
             // Hash password
             string hashedPassword = HashingHelper.HashPassword(User.Password);
@@ -48,9 +48,9 @@ namespace COMP2001_Authentication_Application.Data
         ///     Validate the users login credentials and then create a session for this time-frame
         /// </summary>
         /// <param name="user">contains the users model object from the incoming HTTP request</param>
-        public int ValidateUser(UserModel User)
+        public bool ValidateUser(UserModel User)
         {
-            // TODO: provide validation logic here
+            // TODO: In the future provide a validation framework to check incoming fields
 
             // Hash incoming password, to be matched against database password
             string HashedPassword = HashingHelper.HashPassword(User.Password);
@@ -66,7 +66,7 @@ namespace COMP2001_Authentication_Application.Data
                 new SqlParameter("@Password", HashedPassword));
 
             // Return validity of credentials
-            return Convert.ToInt32(verificationStatus.Value);
+            return Convert.ToInt32(verificationStatus.Value) == 1 ? true : false;
         }
 
         /// <summary>
@@ -74,17 +74,29 @@ namespace COMP2001_Authentication_Application.Data
         ///     it also handles whether or not a specific field has been given data, or is null / empty.
         /// </summary>
         /// <param name="User"></param>
-        public void UpdateUser(UserModel User, int userID)
+        public void UpdateUser(UserModel User, int UserID)
         {
-            // TODO: provide validation logic here
-
             // Attempt to update the specific values on each column and handle null/empty columns
             Database.ExecuteSqlRaw("EXEC UpdateUser @id, @Forename, @Surname, @Email, @Password",
-                new SqlParameter("@id", userID),
+                new SqlParameter("@id", UserID),
                 new SqlParameter("@Forename", string.IsNullOrEmpty(User.Forename) ? Convert.DBNull : User.Forename),
                 new SqlParameter("@Surname", string.IsNullOrEmpty(User.Surname) ? Convert.DBNull : User.Surname),
                 new SqlParameter("@Email", string.IsNullOrEmpty(User.Email) ? Convert.DBNull : User.Email),
                 new SqlParameter("@Password", string.IsNullOrEmpty(User.Password) ? Convert.DBNull : HashingHelper.HashPassword(User.Password)));
+        }
+
+        /// <summary>
+        ///     Delete the specified user by the provided ID parameter.
+        /// </summary>
+        /// <param name="userID"></param>
+        public void DeleteUser(int UserID)
+        {
+            if(UserID > 0)
+            {
+                // Attempt to delete the specifc user inside the users table.
+                Database.ExecuteSqlRaw("EXEC DeleteUser @id",
+                    new SqlParameter("@id", UserID));
+            }
         }
 
         #endregion methods
