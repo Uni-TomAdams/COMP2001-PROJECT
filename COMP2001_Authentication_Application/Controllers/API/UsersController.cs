@@ -73,11 +73,11 @@ namespace COMP2001_Authentication_Application.Controllers.API
         // PUT api/user/{id}
         [HttpPut("{id}")]
         [AllowAnonymous]
-        public async Task<ActionResult<UserModel>> Update([FromBody] UserModel user, int id)
+        public async Task<ActionResult<UserModel>> Put([FromBody] UserModel user, int id)
         {
             _context.UpdateUser(user, id);
 
-            return Ok();
+            return NoContent();
         }
 
         // DELETE api/user/{id}
@@ -87,7 +87,7 @@ namespace COMP2001_Authentication_Application.Controllers.API
         {
             _context.DeleteUser(id);
 
-            return Ok();
+            return NoContent();
         }
         
         /// <summary>
