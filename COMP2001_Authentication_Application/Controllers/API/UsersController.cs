@@ -59,7 +59,7 @@ namespace COMP2001_Authentication_Application.Controllers.API
 
             // Generate JWT token
             var jwtResult = _jwtManager.GenerateTokens(claims, DateTime.Now);
-            return Ok(new LoginResultant()
+            return Ok(new LoginResultModel()
             {
                 AccessToken = verificationStatus
                               ? jwtResult.AccessToken
@@ -89,26 +89,27 @@ namespace COMP2001_Authentication_Application.Controllers.API
 
             return Ok();
         }
-
+        
+        /// <summary>
+        ///     Handles the return value for value passed back from the data-access layer call for
+        ///     validating a users credentials.
+        /// </summary>
+        /// <param name="User"></param>
+        /// <returns></returns>
         private bool GetValidation(UserModel User)
         {
             return _context.ValidateUser(User);
         }
 
+        /// <summary>
+        ///     Handles the invocation to the data-access layer for registering a user and
+        ///     providing an output parameter response.
+        /// </summary>
+        /// <param name="User"></param>
+        /// <returns></returns>
         private void Register(UserModel User, out string Response)
         {
             _context.Register(User, out Response);
-        }
-
-        public class LoginResultant
-        {
-            [Required]
-            [JsonPropertyName("AccessToken")]
-            public string AccessToken { get; set; }
-
-            [Required]
-            [JsonPropertyName("Verified")]
-            public string Verified { get; set; }
         }
     }
 }
