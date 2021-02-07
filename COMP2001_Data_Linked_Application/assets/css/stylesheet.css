@@ -1,0 +1,121 @@
+/*
+
+    UNIVERSAL SELECTORS
+
+*/
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit; }
+
+/*
+
+    ELEMENT SELECTORS
+
+*/
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none; }
+
+h1 {
+    color: #FFFFFF;
+    font-size: 42px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+h3 {
+    color: #FFFFFF;
+    font-size: 22px;
+    font-weight: normal;
+}
+
+/*
+
+    CLASS SELECTORS
+
+*/
+
+.panel-box {
+    padding: 60px 40px;
+    background-color: #000241;
+}
+
+.menu-button {
+    width: 100%;
+    padding: 15px;
+    color: #00AEEF;
+    border-width: 2px;
+    font-size: 22px;
+    text-align: center;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border-color: #00AEEF;
+    background-color: #000241;
+}
+
+.content-box {
+    padding: 60px 40px;
+}
+.content-box_main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 60px 40px;
+}
+
+.divider {
+    height: 1px;
+    margin: 30px 0px;
+    background-color: #656565;
+}
+.divider__small {
+    height: 10px;
+    width: 80px;
+    margin-bottom: 25px;
+    border-radius: 50px;
+    background-color: #000241;
+}
+
+.para {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+.para em {
+    color:  #000241;
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* Set the size of the div element that contains the map */
+.map {
+    height: 400px;
+    /* The height is 400 pixels */
+    width: 100%;
+    /* The width is the width of the web page */
+}
+
+.footer-text {
+    color: #000241;
+    font-size: 20px;
+}
+
+.headings_small {
+    color: #000241;
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+
+
+
+
